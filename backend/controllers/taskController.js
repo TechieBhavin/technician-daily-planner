@@ -87,9 +87,46 @@ const completeTask = async (req, res) => {
   }
 };
 
+// @desc   Get today's task summary
+// @route  GET /api/tasks/summary/today
+// @access Public
+const getTodaySummary = async (req, res) => {
+  try {
+    const startOfDay = new Date();
+    startOfDay.setHours(0, 0, 0, 0);
+
+    const endOfDay = new Date();
+    endOfDay.setHours(23, 59, 59, 999);
+
+    const total = await Task.countDocuments({
+      scheduledTime: { $gte: startOfDay, $lte: endOfDay },
+    });
+
+    const completed = await Task.countDocuments({
+      scheduledTime: { $gte: startOfDay, $lte: endOfDay },
+      status: "Completed",
+    });
+
+    const pending = await Task.countDocuments({
+      scheduledTime: { $gte: startOfDay, $lte: endOfDay },
+      status: "Pending",
+    });
+
+    res.status(200).json({
+      total,
+      completed,
+      pending,
+    });
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
+
+
 
 module.exports = {
   createTask,
   getTodayTasks,
-  completeTask
+  completeTask,
+  getTodaySummary,
 };
