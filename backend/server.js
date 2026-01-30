@@ -3,8 +3,9 @@ const cors = require("cors");
 require("dotenv").config();
 
 const connectDB = require("./config/db");
+const taskRoutes = require("./routes/taskRoutes");
 
-const Task = require("./models/Task");
+// const Task = require("./models/Task");
 
 const app = express();
 
@@ -13,6 +14,9 @@ app.use(express.json());
 
 // Connect MongoDB
 connectDB();
+
+
+app.use("/api/tasks", taskRoutes);
 
 app.get("/", (req, res) => {
   res.send("Technician Daily Planner API is running");
