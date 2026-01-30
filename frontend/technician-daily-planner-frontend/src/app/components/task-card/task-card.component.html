@@ -1,1 +1,17 @@
-<p>task-card works!</p>
+<div class="task-card" *ngIf="task">
+  <h3>{{ task.customerName }}</h3>
+
+  <p><b>Location:</b> {{ task.location }}</p>
+  <p><b>Type:</b> {{ task.taskType }}</p>
+  <p><b>Status:</b> {{ task.status }}</p>
+
+  <button
+    *ngIf="task.status === 'Pending'"
+    (click)="markCompleted()">
+    Mark as Completed
+  </button>
+
+  <span *ngIf="task.status === 'Completed'">
+    ✅ Completed on {{ task.completedAt | date:'short' }}
+  </span>
+</div>

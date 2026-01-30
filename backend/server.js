@@ -15,6 +15,10 @@ app.use(express.json());
 // Connect MongoDB
 connectDB();
 
+app.use(cors({
+  origin: "http://localhost:4200"
+}));  
+
 app.use("/api/tasks", taskRoutes);
 
 // Global error handler

@@ -1,3 +1,4 @@
+const { get } = require("mongoose");
 const Task = require("../models/Task");
 
 // @desc   Create a new task
@@ -8,7 +9,9 @@ const createTask = async (req, res) => {
     const { customerName, location, taskType, scheduledTime, notes } = req.body;
 
     if (!customerName || !location || !taskType || !scheduledTime) {
-      return res.status(400).json({ message: "All required fields must be filled" });
+      return res
+        .status(400)
+        .json({ message: "All required fields must be filled" });
     }
 
     const task = await Task.create({
@@ -40,17 +43,17 @@ const getTodayTasks = async (req, res) => {
     endOfDay.setHours(23, 59, 59, 999);
 
     const tasks = await Task.find({
-      scheduledTime: {
-        $gte: startOfDay,
-        $lte: endOfDay,
-      },
-    }).sort({ status: 1, scheduledTime: 1 });
+      scheduledTime: { $gte: startOfDay, $lte: endOfDay }
+    }).sort({ scheduledTime: 1 });
 
-    res.status(200).json(tasks);
+    // ✅ SEND RESPONSE ONLY ONCE
+    return res.status(200).json(tasks);
+
   } catch (error) {
-    res.status(500).json({ message: error.message });
+    return res.status(500).json({ message: error.message });
   }
 };
+
 
 // @desc   Mark task as completed
 // @route  PATCH /api/tasks/:id/complete
@@ -122,11 +125,19 @@ const getTodaySummary = async (req, res) => {
   }
 };
 
-
+const getAllTasks = async (req, res) => {
+  try {
+    const tasks = await Task.find().sort({ createdAt: -1 });
+    res.json(tasks);
+  } catch (error) {
+    res.status(500).json({ message: error.message });
+  }
+};
 
 module.exports = {
   createTask,
   getTodayTasks,
   completeTask,
   getTodaySummary,
+  getAllTasks
 };

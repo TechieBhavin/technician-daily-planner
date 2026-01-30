@@ -1,11 +1,18 @@
-import { Component } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-task-card',
-  imports: [],
+  standalone: true,
+  imports: [CommonModule],
   templateUrl: './task-card.component.html',
-  styleUrl: './task-card.component.css'
+  styleUrls: ['./task-card.component.css']
 })
 export class TaskCardComponent {
+  @Input() task!: any;
+  @Output() complete = new EventEmitter<string>();
 
+  markCompleted() {
+    this.complete.emit(this.task._id);
+  }
 }

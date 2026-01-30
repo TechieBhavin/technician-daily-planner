@@ -1,1 +1,27 @@
-<p>add-task works!</p>
+<h2>Add Task</h2>
+
+<form (ngSubmit)="submitTask()">
+
+  <label>Customer Name</label>
+  <input type="text" [(ngModel)]="task.customerName" name="customerName" required />
+
+  <label>Location</label>
+  <input type="text" [(ngModel)]="task.location" name="location" required />
+
+  <label>Task Type</label>
+  <select [(ngModel)]="task.taskType" name="taskType">
+    <option>Installation</option>
+    <option>Repair</option>
+    <option>Maintenance</option>
+    <option>Inspection</option>
+  </select>
+
+  <label>Scheduled Time</label>
+  <input type="datetime-local" [(ngModel)]="task.scheduledTime" name="scheduledTime" required />
+
+  <label>Notes</label>
+  <textarea [(ngModel)]="task.notes" name="notes"></textarea>
+
+  <button type="submit">Add Task</button>
+
+</form>
