@@ -4,6 +4,8 @@ require("dotenv").config();
 
 const connectDB = require("./config/db");
 
+const Task = require("./models/Task");
+
 const app = express();
 
 app.use(cors());
