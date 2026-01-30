@@ -15,8 +15,15 @@ app.use(express.json());
 // Connect MongoDB
 connectDB();
 
-
 app.use("/api/tasks", taskRoutes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({
+    message: "Something went wrong",
+  });
+});
 
 app.get("/", (req, res) => {
   res.send("Technician Daily Planner API is running");
